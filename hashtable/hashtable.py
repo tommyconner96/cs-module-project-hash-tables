@@ -26,7 +26,7 @@ class HashTable:
         self.capacity = capacity
         self.hash_array = [None] * self.capacity
 
-    # day 1?
+    # day 1
     def get_num_slots(self):
         """
         Return the length of the list you're using to hold the hash
@@ -40,7 +40,7 @@ class HashTable:
         num_slots = len(self.hash_array)
         return num_slots
 
-    # day 1
+    # day 2
     def get_load_factor(self):
         """
         Return the load factor for this hash table.
@@ -98,9 +98,10 @@ class HashTable:
 
         Implement this.
         """
-        
+        cur_index = self.hash_index(key)
+
         if self.get(key):
-            self.hash_array[self.hash_index(key)] = None
+            self.hash_array[cur_index] = None
         else:
             return "err: key not found"
 
@@ -113,8 +114,8 @@ class HashTable:
 
         Implement this.
         """
-        this_index = self.hash_index(key)
-        get_hash = self.hash_array[this_index]
+        cur_index = self.hash_index(key)
+        get_hash = self.hash_array[cur_index]
 
         if get_hash is not None:
             return get_hash.value
