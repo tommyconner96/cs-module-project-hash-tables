@@ -2,6 +2,7 @@ class HashTableEntry:
     """
     Linked List hash table key/value pair
     """
+
     def __init__(self, key, value):
         self.key = key
         self.value = value
@@ -19,11 +20,13 @@ class HashTable:
 
     Implement this.
     """
+    # day 1
 
-    def __init__(self, capacity):
-        # Your code here
+    def __init__(self, capacity=MIN_CAPACITY):
+        self.capacity = capacity
+        self.hash_array = [None] * self.capacity
 
-
+    # day 1?
     def get_num_slots(self):
         """
         Return the length of the list you're using to hold the hash
@@ -34,18 +37,19 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        num_slots = len(self.hash_array)
+        return num_slots
 
-
+    # day 1
     def get_load_factor(self):
         """
         Return the load factor for this hash table.
 
         Implement this.
         """
-        # Your code here
+        pass
 
-
+    # day 1 or 2
     def fnv1(self, key):
         """
         FNV-1 Hash, 64-bit
@@ -53,26 +57,26 @@ class HashTable:
         Implement this, and/or DJB2.
         """
 
-        # Your code here
+        pass
 
-
+    # day 1
     def djb2(self, key):
-        """
-        DJB2 hash, 32-bit
 
-        Implement this, and/or FNV-1.
-        """
-        # Your code here
+        hash = 5381
 
+        for x in key:
+            hash = (hash * 33) + ord(x)
+        return hash
 
     def hash_index(self, key):
         """
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        #return self.fnv1(key) % self.capacity
+        # return self.fnv1(key) % self.capacity
         return self.djb2(key) % self.capacity
 
+    # day 1
     def put(self, key, value):
         """
         Store the value with the given key.
@@ -81,9 +85,11 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        # self.hash_array[self.hash_index(key)] = HashTableEntry(key, value)
+        cur_index = self.hash_index(key)
+        self.hash_array[cur_index] = HashTableEntry(key,value)
 
-
+    # day 1
     def delete(self, key):
         """
         Remove the value stored with the given key.
@@ -92,9 +98,13 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        
+        if self.get(key):
+            self.hash_array[self.hash_index(key)] = None
+        else:
+            return "err: key not found"
 
-
+    # day 1
     def get(self, key):
         """
         Retrieve the value stored with the given key.
@@ -103,9 +113,15 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        this_index = self.hash_index(key)
+        get_hash = self.hash_array[this_index]
 
+        if get_hash is not None:
+            return get_hash.value
+        else:
+            return None
 
+    # day 2
     def resize(self, new_capacity):
         """
         Changes the capacity of the hash table and
@@ -113,8 +129,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
-
+        pass
 
 
 if __name__ == "__main__":
@@ -133,21 +148,23 @@ if __name__ == "__main__":
     ht.put("line_11", "So rested he by the Tumtum tree")
     ht.put("line_12", "And stood awhile in thought.")
 
-    print("")
+    print(ht.get("line_3"))
+    ht.put("key-1", "val-1")
+    print(ht.get("key-1"))
 
-    # Test storing beyond capacity
-    for i in range(1, 13):
-        print(ht.get(f"line_{i}"))
+    # # Test storing beyond capacity
+    # for i in range(1, 13):
+    #     print(ht.get(f"line_{i}"))
 
-    # Test resizing
-    old_capacity = ht.get_num_slots()
-    ht.resize(ht.capacity * 2)
-    new_capacity = ht.get_num_slots()
+    # # Test resizing
+    # old_capacity = ht.get_num_slots()
+    # ht.resize(ht.capacity * 2)
+    # new_capacity = ht.get_num_slots()
 
-    print(f"\nResized from {old_capacity} to {new_capacity}.\n")
+    # print(f"\nResized from {old_capacity} to {new_capacity}.\n")
 
-    # Test if data intact after resizing
-    for i in range(1, 13):
-        print(ht.get(f"line_{i}"))
+    # # Test if data intact after resizing
+    # for i in range(1, 13):
+    #     print(ht.get(f"line_{i}"))
 
-    print("")
+    # print("")
