@@ -27,6 +27,7 @@ def slowfun(x, y):
         v //= (x + y)
         v %= 982451653
         d[(x, y)] = v
+        return v
     else:
         return d[(x, y)]
 
